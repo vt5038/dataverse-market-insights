@@ -4,7 +4,8 @@ extract_coingecko.py
 Fetches cryptocurrency market data from CoinGecko API
 and stores it locally as timestamped CSV (Bronze layer data).
 """
-
+import time
+from src.utils.metadata_logger import init_metadata_db, log_metadata
 import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
@@ -86,41 +87,48 @@ def fetch_crypto_data():
 # -------------------------------------------------------
 def main():
     logging.info("Starting CoinGecko data extraction...")
+    init_metadata_db()
+    start_time = time.time()
 
     try:
         data = fetch_crypto_data()
-        logging.info(f"✅ Successfully fetched {len(data)} records from CoinGecko API.")
-
-        # Convert JSON → DataFrame
         df = pd.DataFrame(data)[["id", "symbol", "current_price", "market_cap", "total_volume"]]
         df["timestamp"] = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
 
-        # Create output directory
+        # Validate data
+        if df.empty:
+            raise ValueError("API returned no data!")
+
+        if df.isnull().sum().any():
+            logging.warning("⚠️ Missing values detected in dataset.")
+
+        # Save locally
         os.makedirs("data/bronze", exist_ok=True)
         filename = f"data/bronze/crypto_data_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.csv"
-
-        # Save as CSV
         df.to_csv(filename, index=False)
-        print("🚀 DEBUG: Calling upload_to_s3 now...")
-        logging.info("🚀 DEBUG: Calling upload_to_s3 now...")
 
+        # Build S3 path
         ingest_date = datetime.utcnow().strftime("%Y-%m-%d")
         s3_key = f"bronze/crypto/ingest_date={ingest_date}/{os.path.basename(filename)}"
 
+        # Upload to S3
         upload_to_s3(filename, s3_key, encrypt=True)
 
-        logging.info(f"💾 Data saved successfully → {filename}")
+        runtime = round(time.time() - start_time, 2)
+        log_metadata("CoinGecko", len(df), "SUCCESS", s3_key, runtime)
+        logging.info(f"✅ Extraction logged successfully. Runtime: {runtime}s")
 
-        print("\n📊 Top Cryptocurrencies:")
         print(df.head())
-        print(f"\n✅ Data saved to {filename}")
+        print(f"\n✅ Uploaded {len(df)} records to s3://{s3_key}")
 
     except Exception as e:
-        logging.error(f"Extraction failed: {e}")
+        runtime = round(time.time() - start_time, 2)
+        log_metadata("CoinGecko", 0, f"FAILED: {e}", None, runtime)
+        logging.error(f"❌ Extraction failed after {runtime}s: {e}")
         print(f"Error during extraction: {e}")
 
 # -------------------------------------------------------
-# 4️⃣ Script Entry Point
+#  Script Entry Point
 # -------------------------------------------------------
 if __name__ == "__main__":
     main()

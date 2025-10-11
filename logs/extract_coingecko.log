@@ -53,3 +53,7 @@
 2025-10-10 09:46:21,494 [INFO] \U0001f680 DEBUG: Calling upload_to_s3 now...
 2025-10-10 09:46:22,520 [INFO] Uploaded to s3://dataverse-market-insights-bronze/bronze/crypto/ingest_date=2025-10-10/crypto_data_20251010_134621.csv
 2025-10-10 09:46:22,520 [INFO] \U0001f4be Data saved successfully \u2192 data/bronze/crypto_data_20251010_134621.csv
+2025-10-11 16:45:54,905 [INFO] Starting CoinGecko data extraction...
+2025-10-11 16:45:57,824 [INFO] \u2705 Successfully fetched 10 records.
+2025-10-11 16:45:58,701 [INFO] Uploaded to s3://dataverse-market-insights-bronze/bronze/crypto/ingest_date=2025-10-11/crypto_data_20251011_204557.csv
+2025-10-11 16:45:58,706 [INFO] \u2705 Extraction logged successfully. Runtime: 3.79s
