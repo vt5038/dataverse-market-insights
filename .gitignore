@@ -1,6 +1,43 @@
-venv/
+# -----------------------------
+# Python
+# -----------------------------
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+
+# -----------------------------
+# Environment & Config Files
+# -----------------------------
 .env
-tmp/
+.env.*
+*.pem
+*.key
+
+# -----------------------------
+# Local Data & Logs
+# -----------------------------
 data/
+logs/
+tmp/
+
+# -----------------------------
+# Jupyter, IDE, Cache
+# -----------------------------
+.ipynb_checkpoints/
+.vscode/
+.DS_Store
+
+# -----------------------------
+# Airflow / ETL (future)
+# -----------------------------
+dags/__pycache__/
+dags/logs/
+plugins/__pycache__/
+
+# -----------------------------
+# AWS Temporary Credentials (safety)
+# -----------------------------
+.aws/
