@@ -57,3 +57,7 @@
 2025-10-11 16:45:57,824 [INFO] \u2705 Successfully fetched 10 records.
 2025-10-11 16:45:58,701 [INFO] Uploaded to s3://dataverse-market-insights-bronze/bronze/crypto/ingest_date=2025-10-11/crypto_data_20251011_204557.csv
 2025-10-11 16:45:58,706 [INFO] \u2705 Extraction logged successfully. Runtime: 3.79s
+2025-10-12 15:09:57,037 [INFO] Starting CoinGecko data extraction...
+2025-10-12 15:09:59,963 [INFO] \u2705 Successfully fetched 10 records.
+2025-10-12 15:10:00,951 [INFO] Uploaded to s3://dataverse-market-insights-bronze/bronze/crypto/ingest_date=2025-10-12/crypto_data_20251012_190959.csv
+2025-10-12 15:10:00,957 [INFO] \u2705 Extraction logged successfully. Runtime: 3.91s
