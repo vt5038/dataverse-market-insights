@@ -112,6 +112,36 @@ Apply best practices of data engineering — modular design, fault tolerance, sc
 
 ---
 
+☁️ Automation & Orchestration powered by Apache Airflow
+
+⚙️ Fully automated Airflow ETL pipeline — orchestrated with Docker, scheduled every 6 hours, and integrated with AWS S3, Glue, and Athena for continuous analytics.
+
+The Dataverse Market Insights pipeline is fully automated and orchestrated with Apache Airflow, running seamlessly in a Dockerized environment to ensure reliability, scalability, and zero manual intervention.
+
+⚙️ Automated DAG Workflow
+Task	Description
+🪙 extract_data	Fetches live market data (Crypto, Stocks, Forex) from respective APIs.
+🧩 transform_data	Cleans, validates, and converts extracted data into the Silver layer.
+🧠 create_glue_table	Triggers AWS Glue Crawlers to update schema and data catalog.
+🔍 query_with_athena	Executes Athena SQL queries to prepare Gold-layer analytics data.
+✅ notify_completion	Sends success confirmation after the full ETL cycle.
+🕓 Continuous & Scheduled Execution
+
+⏰ Runs automatically 4 times a day — every 6 hours — using Airflow’s built-in scheduler (0 */6 * * * cron).
+
+🧠 Task dependencies ensure each step runs sequentially and only on successful completion of the previous stage.
+
+🔁 Automatic retries and failure alerts built into each task enhance pipeline resiliency.
+
+🐳 Docker Compose integration keeps all Airflow components (scheduler, worker, webserver, PostgreSQL, Redis) continuously active, so the pipeline operates even when the browser or system is idle.
+
+🌐 Why This Matters
+
+This setup simulates a real-world production-grade orchestration layer —
+it transforms your data pipeline from a set of scripts into a self-healing, continuously running data ecosystem capable of scaling and monitoring itself.
+
+---
+
 ## 🚀 Quick Start
 
 ### 1️⃣ Setup Environment
